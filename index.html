@@ -148,7 +148,7 @@
 <script>
     // --- Configuration ---
     const ADMIN_EMAIL = "tfrancisco.svc@gmail.com"; // CHANGE THIS to where results should go
-    const WHEEL_VALUES = [0, 5, 10, 0, 10, 5, 0, 5100, 0, 1000, 100]; // 11 slots from your prompt
+    const WHEEL_VALUES = [0, 5, 10, 0, 10, 5, 0, 100, 0, 1000, 100]; // 11 slots from your prompt
 
     // Indices of slots that the wheel is *allowed* to land on (mechanics constraint)
     const ALLOWED_WIN_INDICES = [0, 1, 2, 3, 4, 5, 6, 8]; // Points to values: 0, 5, 10
@@ -263,7 +263,7 @@
     // --- Function: Send Result via PHP ---
     function sendResultEmail(data) {
         // We use fetch to send a POST request to a separate PHP file.
-        fetch('send_result.php', {
+        fetch('/send_result.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
