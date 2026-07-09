@@ -260,33 +260,42 @@
         }, 4000); // Must match the CSS transition time
     });
 
-    // --- Function: Send Result via PHP ---
+    // --- Function: Send Result ---
     function sendResultEmail(data) {
-        // We use fetch to send a POST request to a separate PHP file.
-        fetch('/send_result.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        .then(response => response.json())
-        .then(result => {
-            console.log('Server Response:', result);
-            if (result.success) {
-                // Keep button disabled as requested.
-                resultMessage.textContent += " (Result sent to administrator)";
-            } else {
-                resultMessage.textContent += " (Error sending email confirmation.)";
-                console.error("Mail error:", result.message);
-            }
-        })
-        .catch((error) => {
-            console.error('Fetch Error:', error);
-            resultMessage.textContent += " (Connection error. Result not sent.)";
-        });
-    }
-</script>
+    // We send it to Web3Forms' API endpoint instead of the PHP file
+    const formEndpoint = "https://api.web3forms.com/submit"; 
+
+    const payload = {
+        access_key: "485299c4-15d4-4294-a0f9-964b33b4f782", // <--- PASTE YOUR KEY HERE
+        subject: "Fortune Wheel Spin Result (PoC)",
+        from_name: "Wheel Game System",
+        user_email: data.email,
+        user_address: data.address,
+        prize_won: data.prize
+    };
+
+    fetch(formEndpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload),
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            resultMessage.textContent += " (Result sent to administrator via API)";
+        } else {
+            resultMessage.textContent += " (API accepted request but returned an error.)";
+        }
+    })
+    .catch((error) => {
+        console.error('Fetch Error:', error);
+        resultMessage.textContent += " (Connection error. Result not sent.)";
+    });
+}
+    </script>
 
 </body>
 </html>
