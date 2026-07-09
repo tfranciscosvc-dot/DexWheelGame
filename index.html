@@ -285,9 +285,9 @@
     .then(response => response.json())
     .then(result => {
         if (result.success) {
-            resultMessage.textContent += " (Result sent to administrator via API)";
+            resultMessage.textContent += " ";
         } else {
-            resultMessage.textContent += " (API accepted request but returned an error.)";
+            resultMessage.textContent += " ";
         }
     })
     .catch((error) => {
