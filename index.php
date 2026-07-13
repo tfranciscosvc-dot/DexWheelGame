@@ -1,3 +1,25 @@
+<?php
+session_start();
+
+// 1. Check if the administrator forced a reset via a URL parameter (e.g., index.php?unlock=true)
+if (isset($_GET['unlock']) && $_GET['unlock'] === 'true') {
+    $_SESSION['has_spun'] = false;
+    // Optional: Clear a server-side lock file if you want to block the IP address too
+    if (file_exists('lockout.txt')) {
+        unlink('lockout.txt');
+    }
+    header("Location: index.php"); // Clean the URL
+    exit;
+}
+
+// 2. Determine if the user is locked out
+$isLocked = false;
+if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exists('lockout.txt')) {
+    $isLocked = true;
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -191,10 +213,17 @@ body {
             <input type="email" id="email" name="email" placeholder="you@example.com" required>
         </div>
 
-        <button type="submit" id="spinBtn">SPIN</button>
-    </form>
+    <button type="submit" id="spinBtn" <?php echo $isLocked ? 'disabled' : ''; ?>>SPIN</button>
+</form>
 
-    <p id="resultMessage"></p>
+<p id="resultMessage">
+    <?php 
+    if ($isLocked) {
+        echo 'You have already used your spin. <br><span style="font-size: 13px; color: #666; font-weight: normal; display: block; margin-top: 5px;">check email for confirmation</span>';
+    }
+    ?>
+</p>
+    
     <p class="footnote">prices subject to supply </p>
     <p class="footnote">DEX wheel beta game </p>
 </div>
