@@ -221,9 +221,9 @@ if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exi
 </div>
 
 <script>
-    const WHEEL_VALUES = [0, 5, 10, 0, 10, 5, 0, 5100, 0, 1000, 100];
+    const WHEEL_VALUES = [0, 5, 10, 0, 10, 5, 0, 100, 0, 1000, 100];
     const ALLOWED_WIN_INDICES = [0, 1, 2, 3, 4, 5, 6, 8]; 
-    const COLORS = ["#f1c40f", "#e67e22", "#e74c3c", "#9b59b6", "#3498db", "#1abc9c"];
+    const COLORS = ["#f1c40f", "#e67e22", "#e74c3c", "#9b59b6", "#3498db", "#1abc9c", "#3baea7"];
 
     const wheelSvg = document.getElementById('wheel');
     const spinForm = document.getElementById('spinForm');
