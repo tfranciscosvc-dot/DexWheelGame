@@ -301,7 +301,7 @@ if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exi
             wheelSvg.style.transform = `rotate(${currentRotation}deg)`;
 
             setTimeout(() => {
-                resultMessage.textContent = `Your prize in USDT is: ${winningValue}`;
+                resultMessage.textContent = `Your prize (equivalent in USDT) is: ${winningValue}`;
                 resultMessage.style.color = winningValue > 0 ? "#27ae60" : "#e74c3c";
 
                 // TRIGGER CONFETTI ANIMATION 🎉
