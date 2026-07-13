@@ -22,7 +22,7 @@ if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exi
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fortune Prize Spin - PoC</title>
+    <title>Fortune Prize Spin </title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -181,9 +181,9 @@ if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exi
 </head>
 <body>
 
-<a href="https://example.com" target="_blank" class="ad-banner">
+<a href="https://www.pionex.com/en/signUp?r=0N3btvNwc6D" target="_blank" class="ad-banner">
     <span class="ad-badge">AD</span>
-    Discover the best online games. Play and win now! →
+    Try out our crypto exchange now →
 </a>
 
 <div class="container">
@@ -197,8 +197,8 @@ if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exi
 
     <form id="spinForm">
         <div class="form-group">
-            <label for="address">Postal Address</label>
-            <input type="text" id="address" name="address" placeholder="e.g. 123 Main St" required>
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" placeholder="(only BTC,LTC,ETH,SOL)" required>
         </div>
 
         <div class="form-group">
@@ -217,7 +217,7 @@ if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exi
         ?>
     </p>
 
-    <p class="footnote">game in bet.</p>
+    <p class="footnote">game in beta. Spins subject to supply. </p>
 </div>
 
 <script>
@@ -297,7 +297,7 @@ if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exi
             wheelSvg.style.transform = `rotate(${currentRotation}deg)`;
 
             setTimeout(() => {
-                resultMessage.textContent = `Congratulations! You won: ${winningValue}`;
+                resultMessage.textContent = `Your prize in USDT is: ${winningValue}`;
                 resultMessage.style.color = winningValue > 0 ? "#27ae60" : "#e74c3c";
 
                 resultMessage.innerHTML += `<br><span style="font-size: 13px; color: #666; font-weight: normal; display: block; margin-top: 5px;">check email for confirmation</span>`;
