@@ -378,6 +378,21 @@ body {
         resultMessage.textContent += " (Connection error. Result not sent.)";
     });
 }
+
+    spinForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    spinBtn.disabled = true;
+
+    // Call the server to lock this session permanently
+    fetch('/lock.php')
+    .then(response => response.json())
+    .catch(err => console.error("Locking failed on server", err));
+
+    resultMessage.textContent = "Spinning...";
+    resultMessage.style.color = "#333";
+    
+    
     </script>
 
 </body>
