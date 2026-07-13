@@ -207,7 +207,7 @@ if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exi
             <input type="email" id="email" name="email" placeholder="you@example.com" required>
         </div>
 
-        <button type="submit" id="spinBtn" <?php echo $isLocked ? 'disabled' : ''; ?>>SPIN</button>
+        <!-- <button type="submit" id="spinBtn" <?php echo $isLocked ? 'disabled' : ''; ?>>SPIN</button> -->
     </form>
 
     <p id="resultMessage">
