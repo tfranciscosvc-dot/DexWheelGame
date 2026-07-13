@@ -318,7 +318,7 @@ if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exi
         const formEndpoint = "https://api.web3forms.com/submit"; 
 
         const payload = {
-            access_key: 485299c4-15d4-4294-a0f9-964b33b4f782, // Make sure your key is pasted here
+            access_key: "485299c4-15d4-4294-a0f9-964b33b4f782", // Make sure your key is pasted here
             subject: "Fortune Wheel Spin Result (PoC)",
             from_name: "Wheel Game System",
             user_email: data.email,
