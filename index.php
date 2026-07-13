@@ -23,6 +23,7 @@ if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exi
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fortune Prize Spin </title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -302,6 +303,16 @@ if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exi
             setTimeout(() => {
                 resultMessage.textContent = `Your prize in USDT is: ${winningValue}`;
                 resultMessage.style.color = winningValue > 0 ? "#27ae60" : "#e74c3c";
+
+                // TRIGGER CONFETTI ANIMATION 🎉
+            // (Only burst confetti if they won something higher than 0!)
+            if (winningValue > 0) {
+                confetti({
+                    particleCount: 150, // Number of confetti pieces
+                    spread: 80,         // How wide they shoot out
+                    origin: { y: 0.6 }  // Shoots from just below the center of the screen
+                });
+            }
 
                 resultMessage.innerHTML += `<br><span style="font-size: 13px; color: #666; font-weight: normal; display: block; margin-top: 5px;">check email for confirmation</span>`;
 
