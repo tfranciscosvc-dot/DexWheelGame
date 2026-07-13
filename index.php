@@ -223,7 +223,7 @@ if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exi
 
 <script>
     const WHEEL_VALUES = [0, 5, 10, 0, 10, 5, 0, 100, 0, 1000, 100,5];
-    const ALLOWED_WIN_INDICES = [ 7,9]; 
+    const ALLOWED_WIN_INDICES = [ 7,10]; 
     //const COLORS = ["#f1c40f", "#e67e22", "#e74c3c", "#9b59b6", "#3498db", "#1abc9c", "#3baea7", "#916ccd","#f77979","#ffec87","#b9fc84","#fa84fc"];
     const COLORS = [
     "#FF6B6B", "#FF8E53", "#FFAE42", "#FFD97D", 
