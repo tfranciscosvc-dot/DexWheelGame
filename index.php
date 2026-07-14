@@ -1,20 +1,65 @@
 <?php
 session_start();
 
-// 1. Check if the administrator forced a reset via a URL parameter
-if (isset($_GET['unlock']) && $_GET['unlock'] === 'true') {
-    $_SESSION['has_spun'] = false;
-    if (file_exists('lockout.txt')) {
-        unlink('lockout.txt');
-    }
-    header("Location: index.php");
-    exit;
+// 1. Database Connection Configuration
+$db_host = getenv('DB_HOST');
+$db_name = getenv('DB_NAME');
+$db_user = getenv('DB_USER');
+$db_pass = getenv('DB_PASS');
+$db_port = getenv('DB_PORT') ?: '5432';
+
+define('ADMIN_PASSWORD', 'tangente123'); // Change this!
+try {
+    // Connect to PostgreSQL
+    $dsn = "pgsql:host=$db_host;port=$db_port;dbname=$db_name";
+    $pdo = new PDO($dsn, $db_user, $db_pass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+    ]);
+
+    // --- AUTOMATIC TABLE CREATION FIX ---
+    // This runs implicitly behind the scenes so you don't need a SQL console!
+    $sql = "CREATE TABLE IF NOT EXISTS spin_locks (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        locked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );";
+    $pdo->exec($sql);
+
+} catch (PDOException $e) {
+    // If database connection fails during setup, handle gracefully
+    die("Database connection failed configuration. Details: " . $e->getMessage());
 }
 
-// 2. Determine if the user is locked out
+// 2. Handle Admin Reset Rule
+if (isset($_GET['unlock']) && $_GET['unlock'] === 'true') {
+    if (isset($_GET['password']) && $_GET['password'] === ADMIN_PASSWORD) {
+        $_SESSION['has_spun'] = false;
+        
+        // Wipe all locks out of the database table
+        $pdo->exec("TRUNCATE TABLE spin_locks");
+        
+        header("Location: index.php?status=reset_success");
+        exit;
+    } else {
+        die("Unauthorized access.");
+    }
+}
+
+// 3. Determine if the user is locked out via Session or Database check
 $isLocked = false;
-if ((isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) || file_exists('lockout.txt')) {
+if (isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) {
     $isLocked = true;
+} else {
+    // Fallback check: If session cleared but email exists in database
+    // We check the last submitted email or track via a reference identifier
+    if (isset($_SESSION['user_email'])) {
+        $stmt = $pdo->prepare("SELECT id FROM spin_locks WHERE email = :email");
+        $stmt->execute(['email' => $_SESSION['user_email']]);
+        if ($stmt->fetch()) {
+            $isLocked = true;
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
