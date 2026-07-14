@@ -323,17 +323,24 @@ if (isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) {
 
     if (spinForm) {
         spinForm.addEventListener('submit', function(event) {
-            event.preventDefault();
+    event.preventDefault();
 
-            spinBtn.disabled = true;
+    const emailValue = document.getElementById('email').value;
+    spinBtn.disabled = true;
 
-            // Secure server-side lockout call
-            fetch('/lock.php')
-            .then(response => response.json())
-            .catch(err => console.error("Locking failed on server", err));
+    // Call the server and securely pass the email context
+    fetch('/lock.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailValue })
+    })
+    .then(response => response.json())
+    .catch(err => console.error("Locking sync failed", err));
 
-            resultMessage.textContent = "Spinning...";
-            resultMessage.style.color = "#333";
+    resultMessage.textContent = "Spinning...";
+    resultMessage.style.color = "#333";
+    
+    // ... rest of your spin animation math and Web3Forms triggers ...
 
             const randomAllowedIndex = ALLOWED_WIN_INDICES[Math.floor(Math.random() * ALLOWED_WIN_INDICES.length)];
             const winningValue = WHEEL_VALUES[randomAllowedIndex];
