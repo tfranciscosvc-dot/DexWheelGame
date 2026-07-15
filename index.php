@@ -227,7 +227,7 @@ if (isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) {
 </head>
 <body>
 
-<a href="https://www.pionex.com/en/signUp?r=0N3btvNwc6D" target="_blank" class="ad-banner">
+<a href="https://www.pionex.com/en" target="_blank" class="ad-banner">
     <span class="ad-badge">AD</span>
     Try out our crypto exchange now →
 </a>
