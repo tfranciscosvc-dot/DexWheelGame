@@ -322,21 +322,42 @@ if (isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) {
     let currentRotation = 0;
 
     if (spinForm) {
-        spinForm.addEventListener('submit', function(event) {
+spinForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
     const emailValue = document.getElementById('email').value;
     spinBtn.disabled = true;
 
-    // Call the server and securely pass the email context
-    fetch('/lock.php', {
+    // Call the server to check/lock the email BEFORE spinning
+    fetch('lock.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: emailValue })
     })
     .then(response => response.json())
-    .catch(err => console.error("Locking sync failed", err));
-
+    .then(data => {
+        if (data.success === false && data.error === 'already_locked') {
+            // STOP! This user has already played.
+            resultMessage.textContent = "You have already spun the wheel! One entry per person.";
+            resultMessage.style.color = "#e74c3c";
+            spinBtn.disabled = false; // Re-enable button so they can try a different email if needed
+        } else if (data.success === true) {
+            // SAFE TO SPIN! Start the actual wheel animation math here
+            resultMessage.textContent = "Spinning...";
+            resultMessage.style.color = "#333";
+            
+            // --- Place your existing wheel rotation & animation code here ---
+            
+        } else {
+            alert("Something went wrong. Please try again.");
+            spinBtn.disabled = false;
+        }
+    })
+    .catch(err => {
+        console.error("Locking sync failed", err);
+        spinBtn.disabled = false;
+    });
+});
     resultMessage.textContent = "Spinning...";
     resultMessage.style.color = "#333";
     
