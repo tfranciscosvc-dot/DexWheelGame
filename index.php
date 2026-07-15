@@ -268,7 +268,7 @@ if (isset($_SESSION['has_spun']) && $_SESSION['has_spun'] === true) {
 
 <script>
     const WHEEL_VALUES = [0, 50, 10, 0, 10, 5, 0, 100, 0, 1000, 100,5];
-    const ALLOWED_WIN_INDICES = [ 0,3,6]; 
+    const ALLOWED_WIN_INDICES = [ 2,5]; 
     //const COLORS = ["#f1c40f", "#e67e22", "#e74c3c", "#9b59b6", "#3498db", "#1abc9c", "#3baea7", "#916ccd","#f77979","#ffec87","#b9fc84","#fa84fc"];
     const COLORS = [
     "#FF6B6B", "#FF8E53", "#FFAE42", "#FFD97D", 
