@@ -1,6 +1,13 @@
 <?php
 session_start();
 
+// --- MAINTENANCE MODE TOGGLE SWITCH ---
+if (getenv('MAINTENANCE_MODE') === 'ON') {
+    header("Location: maintenance.html");
+    exit;
+}
+// --------------------------------------
+
 // 1. Database Connection Configuration
 $db_host = getenv('DB_HOST');
 $db_name = getenv('DB_NAME');
